@@ -27,7 +27,10 @@ jobs:
 
       - name: Publish Maven API
         continue-on-error: true
-        run: ./gradlew publish
+        run: |
+          ./gradlew :reflection-rewriter:publish
+          ./gradlew :reflection-rewriter-proxy-generator:publish
+          ./gradlew :reflection-rewriter-runtime:publish
         env:
           REPO_USER: ${{ secrets.REPO_USER }}
           REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}

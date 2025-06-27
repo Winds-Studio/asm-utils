@@ -26,32 +26,8 @@ allprojects {
             strictVersions(true)
         }
 
-        publishSnapshotsTo("paperSnapshots", "https://maven.nostal.ink/repository/maven-snapshots/")
-        publishReleasesTo("paperReleases", "https://repo.papermc.io/repository/maven-releases/")
-        signWithKeyFromProperties(System.getenv("REPO_USER"), System.getenv("REPO_PASSWORD"))
-
-        apache2License()
-
         github("PaperMC", "asm-utils") {
             ci(true)
-        }
-
-        configurePublications {
-            pom {
-                developers {
-                    jmp()
-                    developer {
-                        id = "Machine-Maker"
-                        name = "Jake Potrebic"
-                        url = "https://github.com/Machine-Maker"
-                    }
-                    developer {
-                        id = "kennytv"
-                        name = "Nassim Jahnke"
-                        url = "https://github.com/kennytv"
-                    }
-                }
-            }
         }
     }
 
@@ -100,6 +76,38 @@ dependencies {
     testImplementation(testDataNewTargets.output)
 
     testDataNewTargets.implementationConfigurationName(mainForNewTargets.output)
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://maven.nostal.ink/repository/maven-snapshots/")
+            credentials {
+                username = System.getenv("REPO_USER")
+                password = System.getenv("REPO_PASSWORD")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            pom {
+                developers {
+                    jmp()
+                    developer {
+                        id = "Machine-Maker"
+                        name = "Jake Potrebic"
+                        url = "https://github.com/Machine-Maker"
+                    }
+                    developer {
+                        id = "kennytv"
+                        name = "Nassim Jahnke"
+                        url = "https://github.com/kennytv"
+                    }
+                }
+            }
+        }
+    }
 }
 
 
