@@ -26,9 +26,9 @@ allprojects {
             strictVersions(true)
         }
 
-        publishSnapshotsTo("paperSnapshots", "https://repo.papermc.io/repository/maven-snapshots/")
+        publishSnapshotsTo("paperSnapshots", "https://maven.nostal.ink/repository/maven-snapshots/")
         publishReleasesTo("paperReleases", "https://repo.papermc.io/repository/maven-releases/")
-        signWithKeyFromProperties("signingKey", "signingPassword")
+        signWithKeyFromProperties(System.getenv("REPO_USER"), System.getenv("REPO_PASSWORD"))
 
         apache2License()
 
