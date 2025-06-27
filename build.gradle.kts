@@ -58,6 +58,38 @@ allprojects {
         override(startsWithAnyOf("org.ow2.asm:asm"), JavadocLinksExtension.LinkOverride.Simple("https://asm.ow2.io/javadoc"))
         override(rootProject.libs.checkerQual, "https://checkerframework.org/api/")
     }
+
+    publishing {
+        repositories {
+            maven {
+                url = uri("https://maven.nostal.ink/repository/maven-snapshots/")
+                credentials {
+                    username = System.getenv("REPO_USER")
+                    password = System.getenv("REPO_PASSWORD")
+                }
+            }
+        }
+        publications {
+            create<MavenPublication>("mavenJava") {
+                from(components["java"])
+                pom {
+                    developers {
+                        jmp()
+                        developer {
+                            id = "Machine-Maker"
+                            name = "Jake Potrebic"
+                            url = "https://github.com/Machine-Maker"
+                        }
+                        developer {
+                            id = "kennytv"
+                            name = "Nassim Jahnke"
+                            url = "https://github.com/kennytv"
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 val mainForNewTargets = sourceSets.create("mainForNewTargets")
 
@@ -76,38 +108,6 @@ dependencies {
     testImplementation(testDataNewTargets.output)
 
     testDataNewTargets.implementationConfigurationName(mainForNewTargets.output)
-}
-
-publishing {
-    repositories {
-        maven {
-            url = uri("https://maven.nostal.ink/repository/maven-snapshots/")
-            credentials {
-                username = System.getenv("REPO_USER")
-                password = System.getenv("REPO_PASSWORD")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            pom {
-                developers {
-                    jmp()
-                    developer {
-                        id = "Machine-Maker"
-                        name = "Jake Potrebic"
-                        url = "https://github.com/Machine-Maker"
-                    }
-                    developer {
-                        id = "kennytv"
-                        name = "Nassim Jahnke"
-                        url = "https://github.com/kennytv"
-                    }
-                }
-            }
-        }
-    }
 }
 
 
